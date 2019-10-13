@@ -30,7 +30,7 @@ public:
 		std::string number=std::to_string(value);
 		text = Text(number, font, 19);
 		text.setPosition(x+3, y);
-		text.setFillColor(Color(0,255, 250));
+		text.setFillColor(Color(0, 0, 0));
 	}
 
 	void take(int player){
@@ -39,7 +39,7 @@ public:
 			r.setFillColor(Color(1, 1, 200));
 			r.setOutlineThickness(2);
 		}else{
-			r.setFillColor(Color(1, 120, 30));
+			r.setFillColor(Color(231, 84, 128));
 			r.setOutlineThickness(2);
 		}
 	}
@@ -112,10 +112,6 @@ int main(int argc, char* argv[]){
 		window.draw(sprite);
 		window.display();
 	}
-	
-	Text text("YOU LOSE!", font, 35);
-	text.setPosition(WIDTH/2-80, 20);
-	text.setFillColor(Color(250, 30, 30));
 
 	int pick;
 
@@ -151,6 +147,93 @@ int main(int argc, char* argv[]){
 	t.draw(cr.r);
 	t.display();
 	t.draw(cr.text);
+	t.display();
+
+
+	RectangleShape rwhite(v2f);
+	rwhite.setOutlineThickness(4);
+	rwhite.setOutlineColor(Color(255, 255, 255));
+	
+	// NPC picks one:
+	if(pick){
+		if(left&1){
+			//take left
+			auto co = v_coins[left];
+			co.take(TAKEN_BY_NPC);
+			rwhite.setPosition(co.x, co.y);
+			t.draw(rwhite);
+			t.draw(co.r);
+			t.draw(co.text);
+			t.display();
+
+			left++;
+			co = v_coins[left];
+			co.r.setOutlineThickness(4);
+			t.draw(co.r);
+			t.display();
+		}else{
+			//take right
+			auto co = v_coins[right];
+			co.take(TAKEN_BY_NPC);
+			rwhite.setPosition(co.x, co.y);
+			t.draw(rwhite);
+			t.draw(co.r);
+			t.draw(co.text);
+			t.display();
+
+			right--;
+			co = v_coins[right];
+			co.r.setOutlineThickness(4);
+			t.draw(co.r);
+			t.display();
+		}
+	}else{
+		if(left&1){
+			//take right
+			auto co = v_coins[right];
+			co.take(TAKEN_BY_NPC);
+			rwhite.setPosition(co.x, co.y);
+			t.draw(rwhite);
+			t.draw(co.r);
+			t.draw(co.text);
+			t.display();
+
+			right--;
+			co = v_coins[right];
+			co.r.setOutlineThickness(4);
+			t.draw(co.r);
+			t.display();
+		}else{
+			//take left
+			auto co = v_coins[left];
+			co.take(TAKEN_BY_NPC);
+			rwhite.setPosition(co.x, co.y);
+			t.draw(rwhite);
+			t.draw(co.r);
+			t.draw(co.text);
+			t.display();
+
+			left++;
+			co = v_coins[left];
+			co.r.setOutlineThickness(4);
+			t.draw(co.r);
+			t.display();
+		}
+	}
+
+	window.clear();
+	window.draw(sprite);
+	window.display();
+
+	Text text_top("Pick your next coin!", font, 35);
+	text_top.setPosition(WIDTH/2-160, 160);
+	text_top.setFillColor(Color(0, 0, 0));
+	t.draw(text_top);
+	t.display();
+	Text text_b("(Use left and right keys to play)", font, 25);
+	text_b.setPosition(WIDTH/2-175, 200);
+	text_b.setFillColor(Color(0, 0, 0));
+	t.draw(text_b);
 	t.display();
 
 	while(window.isOpen()){
