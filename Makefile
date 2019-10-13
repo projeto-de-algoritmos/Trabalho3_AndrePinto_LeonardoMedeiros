@@ -1,7 +1,7 @@
 CC := g++
 CFLAGS := -W -Wall -std=c++14
 SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
-speed = 4
+coins = 8
 
 all:
 	$(CC) $(CFLAGS) -c main.cpp -I ./SFML-2.5.1/include/
@@ -12,4 +12,4 @@ clean:
 	rm main.o
 
 run:
-	export LD_LIBRARY_PATH=./SFML-2.5.1/lib/ && ./prog $(speed)
+	export LD_LIBRARY_PATH=./SFML-2.5.1/lib/ && ./prog $(coins)
