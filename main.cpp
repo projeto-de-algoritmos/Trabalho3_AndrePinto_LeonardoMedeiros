@@ -121,7 +121,7 @@ int main(int argc, char* argv[]){
 	}
 
 	int sum_odd=0;
-	for(int i=0; i<v_coins.size(); i+=2){
+	for(int i=1; i<v_coins.size(); i+=2){
 		sum_odd+=v_coins[i].value;
 	}
 
@@ -150,6 +150,23 @@ int main(int argc, char* argv[]){
 	t.display();
 
 
+	int player_amount=0;
+	int npc_amount=0;
+
+	std::string s_player="Player amount:\n";
+	Text text_player(s_player+"0", font, 25);
+	text_player.setPosition(10, HEIGHT-80);
+	text_player.setFillColor(Color(0, 0, 0));
+	t.draw(text_player);
+	t.display();
+
+	std::string s_npc="BOT amount:\n";
+	Text text_npc(s_npc, font, 25);
+	text_npc.setPosition(WIDTH-180, HEIGHT-80);
+	text_npc.setFillColor(Color(0, 0, 0));
+	t.draw(text_npc);
+	t.display();
+
 	RectangleShape rwhite(v2f);
 	rwhite.setOutlineThickness(4);
 	rwhite.setOutlineColor(Color(255, 255, 255));
@@ -165,6 +182,7 @@ int main(int argc, char* argv[]){
 			t.draw(co.r);
 			t.draw(co.text);
 			t.display();
+			npc_amount+=co.value;
 
 			left++;
 			co = v_coins[left];
@@ -180,6 +198,7 @@ int main(int argc, char* argv[]){
 			t.draw(co.r);
 			t.draw(co.text);
 			t.display();
+			npc_amount+=co.value;
 
 			right--;
 			co = v_coins[right];
@@ -197,6 +216,7 @@ int main(int argc, char* argv[]){
 			t.draw(co.r);
 			t.draw(co.text);
 			t.display();
+			npc_amount+=co.value;
 
 			right--;
 			co = v_coins[right];
@@ -212,6 +232,7 @@ int main(int argc, char* argv[]){
 			t.draw(co.r);
 			t.draw(co.text);
 			t.display();
+			npc_amount+=co.value;
 
 			left++;
 			co = v_coins[left];
@@ -220,6 +241,10 @@ int main(int argc, char* argv[]){
 			t.display();
 		}
 	}
+
+	text_npc.setString(s_npc+std::to_string(npc_amount));
+	t.draw(text_npc);
+	t.display();
 
 	window.clear();
 	window.draw(sprite);
@@ -236,14 +261,155 @@ int main(int argc, char* argv[]){
 	t.draw(text_b);
 	t.display();
 
+
+	Text text_lose("YOU LOSE!", font, 35);
+	text_lose.setPosition(WIDTH/2-80, 40);
+	text_lose.setFillColor(Color(0, 0, 0));
+
+	bool isPlaying=true;
+
 	while(window.isOpen()){
 		Event e;
 		while(window.pollEvent(e)){
 			if(e.type == Event::Closed){
 				window.close();
+			}else if(e.type == Event::KeyPressed and isPlaying){
+				switch (e.key.code){
+					case Keyboard::Left :{
+						auto co = v_coins[left];
+						co.take(TAKEN_BY_PLAYER);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						player_amount+=co.value;
+
+						left++;
+						co = v_coins[left];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+						break;
+					}
+					case Keyboard::Right :{
+						auto co = v_coins[right];
+						co.take(TAKEN_BY_PLAYER);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						player_amount+=co.value;
+
+						right--;
+						co = v_coins[right];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+						break;
+					}
+				}
+				if(pick){
+					if(left&1){
+						//take left
+						auto co = v_coins[left];
+						co.take(TAKEN_BY_NPC);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						npc_amount+=co.value;
+
+						left++;
+						co = v_coins[left];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+					}else{
+						//take right
+						auto co = v_coins[right];
+						co.take(TAKEN_BY_NPC);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						npc_amount+=co.value;
+
+						right--;
+						co = v_coins[right];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+					}
+				}else{
+					if(left&1){
+						//take right
+						auto co = v_coins[right];
+						co.take(TAKEN_BY_NPC);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						npc_amount+=co.value;
+
+						right--;
+						co = v_coins[right];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+					}else{
+						//take left
+						auto co = v_coins[left];
+						co.take(TAKEN_BY_NPC);
+						rwhite.setPosition(co.x, co.y);
+						t.draw(rwhite);
+						t.draw(co.r);
+						t.draw(co.text);
+						t.display();
+						npc_amount+=co.value;
+
+						left++;
+						co = v_coins[left];
+						co.r.setOutlineThickness(4);
+						t.draw(co.r);
+						t.display();
+					}
+				}
+
+				// atualiza os amounts
+				Vector2f v2fwhite(720.0, 30.0);
+				RectangleShape rwhite2(v2fwhite);
+				rwhite2.setPosition(0, HEIGHT-50);
+				t.draw(rwhite2);
+				t.display();
+				
+				text_npc.setString(s_npc+std::to_string(npc_amount));
+				t.draw(text_npc);
+				t.display();
+
+				text_player.setString(s_player+std::to_string(player_amount));
+				t.draw(text_player);
+				t.display();
 			}
 		}
 		
+		if(!isPlaying){
+			t.draw(text_lose);
+			t.display();
+			window.clear();
+			window.draw(sprite);
+			window.display();
+			continue;
+		}
+
+		if(left==right){
+			isPlaying=false;
+		}
+
 		window.clear();
 		window.draw(sprite);
 		window.display();
