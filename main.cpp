@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
 			std::cout << "Invalid argument was passed, number of coins must be an integer. Using default." << std::endl;
 		}
 	}
-	
+
 	RenderWindow window(VideoMode(WIDTH, HEIGHT), "Can you win?");
 	auto desktop = VideoMode::getDesktopMode();
 	Vector2i v2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2);
@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
 	window.draw(sprite);
 	window.display();
 
-	
+
 	Coin test(20, 300, 12);
 
 	window.draw(sprite);
@@ -116,12 +116,12 @@ int main(int argc, char* argv[]){
 	int pick;
 
 	int sum_even=0;
-	for(int i=0; i<v_coins.size(); i+=2){
+	for(int i=0; i<(int)v_coins.size(); i+=2){
 		sum_even+=v_coins[i].value;
 	}
 
 	int sum_odd=0;
-	for(int i=1; i<v_coins.size(); i+=2){
+	for(int i=1; i<(int)v_coins.size(); i+=2){
 		sum_odd+=v_coins[i].value;
 	}
 
@@ -170,7 +170,7 @@ int main(int argc, char* argv[]){
 	RectangleShape rwhite(v2f);
 	rwhite.setOutlineThickness(4);
 	rwhite.setOutlineColor(Color(255, 255, 255));
-	
+
 	// NPC picks one:
 	if(pick){
 		if(left&1){
@@ -390,7 +390,7 @@ int main(int argc, char* argv[]){
 				rwhite2.setPosition(0, HEIGHT-50);
 				t.draw(rwhite2);
 				t.display();
-				
+
 				text_npc.setString(s_npc+std::to_string(npc_amount));
 				t.draw(text_npc);
 				t.display();
@@ -400,7 +400,7 @@ int main(int argc, char* argv[]){
 				t.display();
 			}
 		}
-		
+
 		if(!isPlaying){
 			t.draw(text_lose);
 			t.display();
