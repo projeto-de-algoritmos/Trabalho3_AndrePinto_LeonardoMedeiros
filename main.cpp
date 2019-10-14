@@ -309,6 +309,10 @@ int main(int argc, char* argv[]){
 						t.display();
 						break;
 					}
+					default:{
+						continue;
+						break;
+					}
 				}
 				if(pick){
 					if(left&1){
